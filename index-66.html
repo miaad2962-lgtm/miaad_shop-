@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>miaad shop | فروشگاه آنلاین</title>
+<style>
+:root{--bg:#f5f5f5;--card:#fff;--ink:#23254a;--muted:#777;--primary:#ef394e;--line:#e5e5e5;--accent:#fff0f1}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input{font:inherit}
+button{cursor:pointer}
+.screen{min-height:100vh;display:none}
+.screen.active{display:block}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at top right,#ffe3e6,transparent 40%),var(--bg)}
+.login-card{width:min(100%,420px);background:var(--card);padding:30px;border:1px solid var(--line);border-radius:24px;box-shadow:0 18px 55px #20204012}
+.logo{width:100%;min-height:82px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(135deg,#ef394e,#d9233c);border:1px solid #ef394e;box-shadow:0 8px 24px #ef394e25;margin:0 auto 22px;overflow:hidden;position:relative}
+.logo::before{content:"";position:absolute;inset:-80%;background:conic-gradient(from 0deg,transparent 0 35%,#fff 45%,#ffc6cc 52%,transparent 65% 100%);animation:logoSpin 7s linear infinite;opacity:.45}
+.logo::after{content:"";position:absolute;inset:2px;border-radius:16px;background:linear-gradient(135deg,#f04458,#d9233c)}
+.logo span{position:relative;z-index:1;font-family:Georgia,'Times New Roman',serif;font-size:clamp(25px,7vw,36px);font-weight:900;letter-spacing:1.5px;color:#fff;text-shadow:0 2px 12px #9e1025;animation:none}
+@keyframes logoSpin{to{transform:rotate(360deg)}}
+
+h1{font-size:22px;text-align:center;margin:0 0 8px}
+.sub{text-align:center;color:var(--muted);font-size:13px;margin:0 0 28px;line-height:1.9}
+.field{display:block;margin:16px 0}
+.field span{display:block;font-size:13px;margin-bottom:9px}
+.field input,.search input{width:100%;border:1px solid var(--line);background:#fff;border-radius:13px;padding:14px;outline:none}
+.field input:focus,.search input:focus{border-color:var(--primary);box-shadow:0 0 0 3px #ef394e1a}
+.primary{width:100%;border:0;border-radius:13px;padding:14px;background:var(--primary);color:white;font-weight:bold;margin-top:8px}
+.note{font-size:12px;color:var(--muted);text-align:center;margin-top:16px}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3}
+.header-inner{max-width:1100px;margin:auto;padding:12px 22px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:1000;display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;width:100%;font-family:Arial,Tahoma,sans-serif;font-size:clamp(27px,6vw,39px);letter-spacing:-1px;direction:ltr;position:relative;isolation:isolate}
+.brand span:not(.brand-mark){background:linear-gradient(180deg,#ff315b 0%,#ff315b 35%,#b927e8 67%,#327cff 100%);background-clip:text;-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 3px 1px #ffb1c6);position:relative}
+.brand span:not(.brand-mark)::after{content:"";position:absolute;left:12%;bottom:-9px;width:5px;height:13px;border-radius:0 0 6px 6px;background:linear-gradient(#ff315b,#b927e8);box-shadow:19px -3px 0 -1px #ff315b,44px 1px 0 -1px #327cff;opacity:.9}
+.brand-mark{display:grid;place-items:center;width:43px;height:43px;border-radius:14px;background:linear-gradient(145deg,#ff315b,#9b35f2);color:white;font-size:25px;box-shadow:0 5px 16px #ef394e55;position:relative}
+.brand-mark::before{content:"🛒";font-size:27px;filter:drop-shadow(0 2px 2px #53106a)}
+.search{flex:0 1 520px;width:calc(100% - 44px);max-width:520px;position:relative;margin:2px 0 5px;display:block}
+.search .search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:#8d42b8;pointer-events:none;z-index:1}
+.search input{padding-left:42px}
+.header-bell{width:42px;height:42px;flex:0 0 42px;border:1px solid #f0ddec;border-radius:15px;background:linear-gradient(145deg,#fff,#fff3f9);color:#6d35a3;display:grid;place-items:center;position:relative;box-shadow:0 4px 12px #9d39bf16;transition:transform .2s,box-shadow .2s}
+.header-bell:hover{transform:translateY(-1px);box-shadow:0 6px 16px #9d39bf2b}
+.header-bell svg{width:22px;height:22px}
+.header-bell .bell-dot{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:#ef394e;border:1px solid white}
+.header-tools{display:flex;align-items:center;justify-content:center;gap:10px;width:100%}
+.search input{background:linear-gradient(135deg,#fff8fb,#f7f5ff);padding:10px 17px;border:1px solid #ead8f5;border-radius:24px;font-family:Tahoma,Georgia,serif;font-size:13px;min-height:40px;box-shadow:0 4px 14px #a52eea12;transition:border-color .2s,box-shadow .2s}
+.search input::placeholder{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:700;letter-spacing:.25px;color:#7770a0;opacity:1}
+.search input:focus{border-color:#b85bea;box-shadow:0 0 0 3px #b85bea18,0 5px 16px #a52eea18}
+.search-suggestions{display:none;position:absolute;top:calc(100% + 7px);right:0;left:0;z-index:50;background:#fff;border:1px solid #eee2f6;border-radius:17px;box-shadow:0 12px 32px #33204420;overflow:hidden;padding:5px}
+.search-suggestions.show{display:block}
+.search-suggestion{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border:0;border-radius:12px;background:#fff;text-align:right;color:var(--ink)}
+.search-suggestion:hover,.search-suggestion:focus{background:#faf2ff;outline:none}
+.search-suggestion img{width:40px;height:40px;object-fit:cover;border-radius:10px;background:#f7f4fa}
+.search-suggestion .suggestion-name{font-size:13px;font-weight:700;display:block}
+.search-suggestion .suggestion-meta{font-size:11px;color:#858095;display:block;margin-top:4px}
+.search-suggestion .suggestion-price{margin-right:auto;font-size:11px;color:#ef394e;white-space:nowrap}
+.search-suggestion-empty{padding:13px;color:#777;font-size:12px;text-align:center}
+main{max-width:1100px;margin:26px auto;padding:0 22px 100px}
+.welcome{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+.welcome h2{font-size:21px;margin:0 0 7px}
+.welcome p{margin:0;color:var(--muted);font-size:13px}
+.pill{background:var(--accent);color:var(--primary);padding:9px 13px;border-radius:999px;font-size:12px}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:25px 0 14px}
+.section-title h3{font-size:16px;margin:0}
+.section-title span{font-size:12px;color:var(--muted)}
+.categories{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:13px}
+.category{border:1px solid var(--line);background:#fff;border-radius:17px;padding:18px 8px;text-align:center;transition:.2s}
+.category:hover,.category.selected{border-color:var(--primary);background:var(--accent)}
+.category .emoji{font-size:25px;display:block;margin-bottom:10px}
+.category b{font-size:12px;font-weight:normal}
+.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.product{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;min-width:0;position:relative;transition:transform .18s,box-shadow .18s}.product:hover{transform:translateY(-3px);box-shadow:0 10px 24px #2221}
+.product-art{height:185px;border-radius:14px;background:#f8f8f8;display:grid;place-items:center;overflow:hidden;margin-bottom:13px;cursor:pointer}.product-art img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;transition:transform .25s}.product:hover .product-art img{transform:scale(1.045)}.product-tools{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px}.favorite-btn{border:1px solid var(--line);background:#fff;border-radius:50%;width:32px;height:32px;color:#888;font-size:17px}.favorite-btn.active{color:var(--primary);background:#fff0f1;border-color:#ffc5cc}.discount{background:#ef394e;color:white;border-radius:7px;padding:4px 7px;font-size:10px}
+.product h4{font-size:14px;margin:0 0 8px}
+.product .desc{font-size:12px;color:var(--muted);margin:0 0 13px}
+.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price{font-weight:bold;font-size:13px}
+.add{border:0;background:var(--accent);color:var(--primary);border-radius:10px;padding:9px 11px;font-size:12px}.details-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:8px 10px;font-size:12px}.filterbar{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.filterbar select,.filterbar button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;color:var(--ink);font-size:12px}.filterbar button.active{background:var(--accent);border-color:var(--primary);color:var(--primary)}.hero{background:linear-gradient(110deg,#b91f34,#ef394e 58%,#ff7b88);color:#fff;border-radius:22px;padding:26px 28px;display:flex;justify-content:space-between;align-items:center;gap:20px;overflow:hidden;margin-bottom:22px;position:relative}.hero h2{font-size:clamp(22px,4vw,34px);margin:0 0 10px}.hero p{margin:0 0 18px;font-size:13px;line-height:1.9;color:#fffdfd}.hero .hero-btn{background:#fff;color:#d9233c;border:0;border-radius:11px;padding:12px 16px;font-weight:bold}.hero-art{font-size:clamp(58px,10vw,100px);filter:drop-shadow(0 12px 14px #6f102a55)}.modal-backdrop{position:fixed;inset:0;background:#1119;z-index:20;display:grid;place-items:center;padding:18px}.modal{background:#fff;border-radius:20px;width:min(100%,520px);padding:22px;max-height:90vh;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.modal-close{border:0;background:#f5f5f5;border-radius:10px;padding:8px 12px}.detail-art{height:280px;display:grid;place-items:center;text-align:center;background:#f8f8f8;border-radius:16px;overflow:hidden;margin:16px 0}.detail-art img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}.gallery-controls{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:-7px;margin-bottom:12px}.gallery-controls button,.gallery-thumbs button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px}.gallery-thumbs{display:flex;gap:8px;overflow-x:auto;padding:4px 1px 10px}.gallery-thumbs button{padding:3px;width:62px;height:58px;flex:0 0 auto;overflow:hidden}.gallery-thumbs button.active{border:2px solid var(--primary)}.gallery-thumbs img{width:100%;height:100%;object-fit:cover}.order-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:12px}.order-card h4{margin:0 0 8px}.order-card p{color:var(--muted);font-size:12px;margin:5px 0}.hero-wrap{margin-bottom:4px}
+.empty{grid-column:1/-1;text-align:center;padding:35px;color:var(--muted);background:#fff;border-radius:16px}
+.bottom-nav{position:fixed;bottom:0;right:0;left:0;background:#fff;box-shadow:0 -3px 16px #2020400b;border-top:1px solid #eee;z-index:4}
+.nav-inner{max-width:760px;margin:auto;display:flex;justify-content:space-around;align-items:center;padding:7px 7px calc(7px + env(safe-area-inset-bottom));gap:2px}
+.nav-item{position:relative;background:none;border:0;color:#656565;display:grid;gap:4px;justify-items:center;align-content:center;font-size:10px;min-width:0;flex:1;padding:3px 1px;white-space:nowrap}
+.nav-item .ico{width:27px;height:27px;display:grid;place-items:center;position:relative}
+.nav-item .ico svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active{color:var(--primary);font-weight:700}.nav-item.active:after{content:"";position:absolute;top:-7px;width:28px;height:2px;border-radius:3px;background:var(--primary)}
+.icon-wrap{position:relative}.nav-badge{position:absolute;top:-3px;right:-6px;min-width:15px;height:15px;padding:0 3px;display:grid;place-items:center;border-radius:8px;background:var(--primary);color:#fff;border:1px solid #fff;font-size:9px;font-weight:700}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#202938;color:#fff;padding:12px 18px;border-radius:12px;font-size:13px;display:none;z-index:8;box-shadow:0 8px 25px #0002}
+
+.profile-page{max-width:760px;margin:26px auto;padding:0 22px 100px}
+.profile-heading{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.profile-heading h2{font-size:21px;margin:0 0 7px}
+.profile-heading p{font-size:13px;color:var(--muted);margin:0}
+.profile-avatar{width:64px;height:64px;display:grid;place-items:center;border-radius:50%;background:#fff0f1;color:var(--primary);font-size:30px;border:1px solid #ffd1d7}
+.profile-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:5px 18px}
+.profile-row{display:flex;justify-content:space-between;gap:14px;padding:17px 0;border-bottom:1px solid var(--line);font-size:13px}
+.profile-row:last-child{border-bottom:0}
+.profile-row span{color:var(--muted)}
+.profile-row strong{font-weight:bold}
+.profile-row .status{color:#16834a}
+.logout-btn{margin-top:16px;width:100%;padding:14px;border:1px solid var(--primary);color:var(--primary);background:#fff;border-radius:13px;font-weight:bold}
+.cart-page{max-width:850px;margin:26px auto;padding:0 22px 100px}
+.cart-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.cart-heading h2{font-size:21px;margin:0 0 7px}.cart-heading p{font-size:13px;color:var(--muted);margin:0}
+.cart-list{display:grid;gap:12px}.cart-item{display:flex;align-items:center;gap:14px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:16px}
+.cart-art{width:86px;height:86px;flex-shrink:0;display:grid;place-items:center;background:#f8f8f8;border-radius:13px;overflow:hidden}.cart-art img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.cart-info{flex:1;min-width:0}.cart-info h4{margin:0 0 7px;font-size:14px}.cart-info p{margin:0;color:var(--muted);font-size:12px}
+.cart-actions{display:flex;align-items:center;gap:8px;margin-top:10px}.qty-btn,.remove-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 10px;color:var(--ink)}.remove-btn{color:var(--primary);font-size:11px}
+.cart-summary{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}.summary-row{display:flex;justify-content:space-between;gap:12px;margin-bottom:15px;font-size:14px}.checkout-btn{width:100%;border:0;background:var(--primary);color:white;border-radius:12px;padding:14px;font-weight:bold}
+
+.product-detail-modal{width:min(100%,650px);padding:20px}
+.detail-price-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.detail-stock{background:#f0fbf4;color:#16834a;border-radius:9px;padding:8px 10px;font-size:11px;white-space:nowrap}
+.detail-section{padding:14px 0;border-bottom:1px solid var(--line)}
+.detail-section h4{font-size:14px;margin:0 0 10px}
+.detail-section p{font-size:13px;line-height:2;color:#555;margin:0}
+.detail-specs{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.detail-spec{display:flex;justify-content:space-between;gap:15px;padding:11px 12px;font-size:12px;border-bottom:1px solid var(--line)}
+.detail-spec:last-child{border-bottom:0}.detail-spec:nth-child(odd){background:#fafafa}.detail-spec span{color:var(--muted)}.detail-spec b{text-align:left;font-weight:600}
+.detail-tips{padding-right:20px;margin:0;color:#555;font-size:12px;line-height:2.1}.detail-tips li{padding-right:2px;margin-bottom:4px}
+.detail-disclaimer{font-size:11px;line-height:1.9;color:#777;background:#fff8e8;border:1px solid #f3e2b8;border-radius:10px;padding:10px 12px}
+@media(max-width:520px){.product-detail-modal{padding:15px}.product-detail-modal .detail-art{height:230px}.detail-price-row{align-items:flex-start;flex-direction:column}.detail-stock{align-self:flex-start}}
+@media(max-width:560px){.cart-page{padding:0 14px 100px;margin-top:20px}.cart-art{width:62px;height:62px;font-size:28px}.cart-item{gap:10px;padding:10px}}
+[hidden]{display:none!important}
+
+.search-page{max-width:900px;margin:20px auto;padding:0 18px 110px;min-height:65vh}
+.search-page-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}
+.search-page-close{width:46px;height:46px;flex:0 0 46px;border:1px solid #ef394e;border-radius:14px;background:#ef394e;color:#fff;font-size:32px;font-weight:700;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 13px #ef394e44;position:relative;z-index:20;touch-action:manipulation}
+.search-page-close:active{transform:scale(.96)}
+.search-page-top h2{font-size:20px;margin:0}
+.search-page-top p{font-size:12px;color:var(--muted);margin:5px 0 0}
+.search-page-box{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e8e1ee;border-radius:15px;padding:12px 14px;margin-bottom:24px;box-shadow:0 4px 18px #34204408}
+.search-page-box input{border:0;outline:0;flex:1;min-width:0;font:14px Tahoma,Arial,sans-serif;color:var(--ink);background:transparent}
+.search-page-box button{border:0;background:var(--accent);color:var(--primary);border-radius:10px;padding:9px 12px;font:12px Tahoma,Arial,sans-serif}
+.search-page-section{background:#fff;border:1px solid var(--line);border-radius:17px;padding:16px;margin-bottom:18px}
+.search-page-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.search-page-section-head h3{font-size:15px;margin:0}
+.search-page-section-head button{border:0;background:transparent;color:var(--primary);font:12px Tahoma,Arial,sans-serif}
+.recent-search-list{display:flex;gap:9px;flex-wrap:wrap}
+.recent-search-chip{display:flex;align-items:center;gap:7px;border:1px solid #eee7f3;background:#faf8fc;border-radius:22px;padding:9px 12px;color:var(--ink);font:12px Tahoma,Arial,sans-serif;cursor:pointer}
+.popular-search-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.popular-search-item{display:flex;align-items:center;gap:10px;border:1px solid #f0edf2;background:#fff;border-radius:13px;padding:10px;text-align:right;cursor:pointer;color:var(--ink);min-width:0}
+.popular-search-item img{width:58px;height:58px;object-fit:contain;background:#f8f7fa;border-radius:10px;flex-shrink:0}
+.popular-search-item span{font-size:12px;line-height:1.8;font-weight:700}
+.popular-search-item small{display:block;color:var(--muted);font-size:10px;font-weight:400}
+@media(max-width:560px){.search-page{padding:0 14px 110px;margin-top:18px}.search-page-section{padding:13px}.popular-search-item{padding:8px;gap:8px}.popular-search-item img{width:48px;height:48px}.popular-search-item span{font-size:11px}}
+
+@media(max-width:560px){.profile-page{padding:0 14px 100px;margin-top:20px}}
+
+@media(min-width:760px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.product-art{height:150px}}
+@media(max-width:560px){.header-tools{gap:8px}.header-bell{width:39px;height:39px;flex-basis:39px;border-radius:13px}.search{order:0;flex:1 1 auto;width:auto;max-width:none;margin:2px 0 5px}.search input{padding-left:38px}.nav-item{font-size:9px}.nav-item .ico{width:25px;height:25px}.nav-item .ico svg{width:22px;height:22px}.header-inner{padding:12px 14px;flex-wrap:wrap}.brand{flex:0 0 100%;font-size:clamp(27px,8vw,36px)}.search{order:3;flex:0 1 88%;width:88%;max-width:460px;margin:0 auto}main{padding:0 14px 100px;margin-top:20px}.categories{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.category{padding:15px 6px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product{padding:10px}.product-art{height:100px;font-size:39px}.welcome h2{font-size:18px}.pill{font-size:11px}}
+
+/* Product cards inspired by Digikala's clean marketplace layout */
+.products{grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#e7e7e7;border:1px solid #e7e7e7;border-radius:10px;overflow:hidden}
+.product{border:0;border-radius:0;padding:14px 12px 12px;background:#fff;box-shadow:none;display:flex;flex-direction:column;min-height:100%;transition:box-shadow .18s,background .18s;}
+.product:hover{transform:none;box-shadow:inset 0 0 0 1px #d8d8d8;background:#fff}
+.product-art{height:190px;border-radius:0;background:#fff;margin:-2px 0 12px;padding:5px}
+.product-art img{mix-blend-mode:normal;object-fit:contain}
+.product-tools{margin:0 0 10px;min-height:26px}
+.favorite-btn{width:29px;height:29px;font-size:16px;border-color:transparent;background:#fff}
+.discount{border-radius:20px;padding:4px 9px;font-weight:700;font-size:10px}
+.product h4{font-size:13px;line-height:1.9;min-height:48px;margin:0 0 5px;color:#3f4064;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product .desc{font-size:11px;line-height:1.8;min-height:38px;margin:0 0 10px;color:#767790;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-bottom{margin-top:auto;display:flex;flex-direction:column;align-items:stretch;gap:9px}
+.price{font-size:14px;color:#23254a;text-align:left;direction:rtl}
+.add{width:100%;border:1px solid #ef394e;background:#fff;color:#ef394e;border-radius:7px;padding:9px 8px;font-size:12px;font-weight:700}
+.add:hover{background:#fff0f1}
+.details-btn{border-radius:7px!important;font-size:11px!important;padding:8px!important}
+@media(min-width:1000px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}.product-art{height:190px}}
+@media(min-width:1300px){main{max-width:1200px}.products{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:759px){.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:1px}.product{padding:10px 9px}.product-art{height:145px}.product h4{font-size:12px;min-height:44px}.product .desc{font-size:10px;min-height:34px}.price{font-size:12px}.add{font-size:11px;padding:8px 5px}}
+@media(max-width:360px){.product-art{height:115px}.product{padding:8px 7px}.product h4{font-size:11px}}
+
+
+/* Miaad Shop polish: gentle motion, rating/review UI, improved order cards */
+.product{animation:cardIn .35s ease both;}
+.product:nth-child(2n){animation-delay:.025s}.product:nth-child(3n){animation-delay:.05s}
+@keyframes cardIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.product-rating{display:flex;align-items:center;gap:5px;color:#f59e0b;font-size:11px;margin:2px 0 8px}
+.product-rating small{color:var(--muted);font-size:10px}
+.review-stars{display:flex;gap:7px;direction:ltr;justify-content:flex-end;margin:8px 0 12px}
+.review-star{border:1px solid #eee0a6;background:#fffaf0;color:#e5a100;border-radius:10px;padding:7px 10px;font-size:20px;cursor:pointer}
+.review-star.selected{background:#fff0b8;border-color:#f4c542;transform:translateY(-1px)}
+.review-form{display:grid;gap:9px;margin-top:12px}
+.review-form input,.review-form textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;font:12px Tahoma,Arial,sans-serif;background:#fff;color:var(--ink)}
+.review-entry{border:1px solid var(--line);border-radius:12px;padding:11px;margin:8px 0;background:#fff}
+.review-entry p{font-size:12px;line-height:1.9;margin:6px 0 0;white-space:pre-wrap}
+.order-card{animation:cardIn .3s ease;border:1px solid var(--line);border-radius:15px;background:#fff;padding:15px;margin:12px 0;box-shadow:0 5px 18px #27203b08}
+.order-status{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:6px 10px;background:#eefbf2;color:#16834a;font-size:11px}
+@media(prefers-reduced-motion:reduce){.product,.order-card{animation:none}}
+
+/* Animated support button */
+.support-tag{position:fixed;left:12px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:6;width:88px;height:33px;padding:0 10px;border:1px solid transparent;border-radius:13px;background:linear-gradient(#202033,#202033) padding-box,conic-gradient(from var(--support-angle,0deg),#ff315b,#ffcf38,#4dffb8,#42c7ff,#b65cff,#ff315b) border-box;color:#fff;font-family:Tahoma,Arial,sans-serif;font-size:12px;font-weight:800;letter-spacing:.2px;box-shadow:0 0 7px #ff315b70,0 0 13px #4dceff55;animation:supportHue 3s linear infinite,supportGlow 1.8s ease-in-out infinite alternate}
+.support-tag:before{content:"";position:absolute;inset:-2px;border-radius:15px;z-index:-1;background:conic-gradient(from var(--support-angle,0deg),#ff315b,#ffcf38,#4dffb8,#42c7ff,#b65cff,#ff315b);filter:blur(5px);opacity:.65;animation:supportHue 3s linear infinite}
+@keyframes supportHue{to{--support-angle:360deg;filter:hue-rotate(360deg)}}
+@keyframes supportGlow{from{box-shadow:0 0 4px #ff315b70,0 0 8px #4dceff35}to{box-shadow:0 0 9px #ff315bba,0 0 17px #4dceff8a}}
+.support-apps{display:flex;justify-content:center;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-top:18px}
+.support-app{display:flex;flex-direction:column;align-items:center;gap:5px;width:48px;color:#45455b;font:11px Tahoma,Arial,sans-serif;text-decoration:none}
+.support-app img{width:42px;height:42px;object-fit:contain;border-radius:12px;background:#fff;box-shadow:0 2px 8px #22222212;border:1px solid #eeeeF4;padding:2px}
+.support-app span{white-space:nowrap}
+@media(prefers-reduced-motion:reduce){.support-tag,.support-tag:before{animation:none}}
+
+
+/* Miaad Shop 2026 — marketplace visual refresh */
+:root{--bg:#f4f5f7;--card:#fff;--ink:#25283a;--muted:#777d8c;--primary:#e53245;--line:#e8eaf0;--accent:#fff0f2;--shadow:0 8px 28px rgba(28,35,55,.07)}
+body{background:#f4f5f7;color:#25283a;letter-spacing:0}
+header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);box-shadow:0 3px 16px #2224330b;border-bottom:1px solid #eceef3}
+.header-inner{max-width:1240px;margin:auto;gap:18px;padding:16px 24px}
+.brand{font-weight:900;letter-spacing:-.4px;color:#24263a}.brand-mark{box-shadow:0 5px 12px #ef394e35;border-radius:12px}
+.search input,.search input:focus{border-radius:12px;background:#f6f7f9;border:1px solid #e7e9ef;transition:.2s}
+.search input:focus{background:#fff;box-shadow:0 0 0 3px #e5324517;border-color:#ef9aa4}
+main{max-width:1240px;margin:25px auto;padding:0 24px 110px}
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:32px 34px;background:linear-gradient(110deg,#fff 0%,#fff5f6 52%,#ffe3e7 100%);border:1px solid #f7d9de;box-shadow:var(--shadow)}
+.hero:after{content:"";position:absolute;width:230px;height:230px;border:34px solid #ef394e0c;border-radius:50%;left:7%;top:-90px;pointer-events:none}
+.hero h2{font-size:clamp(21px,3vw,30px);font-weight:900;line-height:1.7}.hero p{max-width:600px;line-height:2;color:#626879}.hero-btn,.primary{border-radius:11px;box-shadow:0 5px 14px #e5324525;transition:transform .18s,box-shadow .18s}
+.hero-btn:hover,.primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px #e5324533}
+.welcome{margin-top:28px}.welcome h2{font-weight:900}.section-title{margin-top:28px}
+.categories{gap:12px}.category{border:1px solid #e8eaf0;border-radius:15px;background:#fff;box-shadow:0 3px 12px #20243a06;transition:transform .18s,border-color .18s,box-shadow .18s}.category:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.category.selected{border-color:#ef9ba5;background:#fff8f9;box-shadow:0 0 0 2px #e532450b}
+.products{background:#e8eaf0;border:1px solid #e8eaf0;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px #20243a07}
+.product{position:relative;padding:16px 14px 14px;min-width:0;transition:background .2s,box-shadow .2s}.product:hover{z-index:1;box-shadow:inset 0 0 0 1px #e0a1a8,0 5px 18px #20243a0b;background:#fff}
+.product-art{border-radius:10px;background:linear-gradient(145deg,#fafbfc,#f1f3f6);height:190px;overflow:hidden}.product-art img{transition:transform .35s}.product:hover .product-art img{transform:scale(1.045)}
+.product h4{line-height:1.9;color:#292c3c}.product .desc{color:#7a8090;line-height:1.8}.price{font-weight:900;color:#24263a}.add{border-radius:9px;border-color:#e53245;font-weight:800;transition:background .18s,color .18s}.add:hover{background:#e53245;color:#fff}
+.details-btn{border-radius:9px!important;background:#fff!important;border:1px solid #e2e5eb!important;color:#4b5060!important;transition:.18s}.details-btn:hover{border-color:#ef9aa4!important;color:#d72d40!important;background:#fff8f9!important}
+.nav-bottom,.bottom-nav{box-shadow:0 -5px 25px #20243a0c;backdrop-filter:blur(12px);border-top:1px solid #e8eaf0}
+.modal{backdrop-filter:blur(5px)}.product-detail-modal{border-radius:20px;box-shadow:0 25px 90px #15182a35}.detail-art{border-radius:14px;background:#f5f6f8}.review-entry{border-radius:12px;border-color:#eceef3;box-shadow:0 2px 8px #22243305}.cart-summary,.cart-item,.profile-card,.order-card{border-radius:15px;box-shadow:0 4px 18px #20243a08}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #e5324533;outline-offset:2px}
+@media(max-width:759px){.header-inner{padding:12px 14px;gap:10px}main{padding:0 12px 100px;margin-top:14px}.hero{padding:22px 18px;border-radius:17px}.hero-art{opacity:.8}.products{border-radius:12px}.product{padding:11px 9px}.product-art{height:138px}.product h4{min-height:40px}.categories{gap:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+</style>
+</head>
+<body>
+<section id="loginScreen" class="screen">
+ <div class="login-wrap">
+  <form class="login-card" id="loginForm">
+   <div class="logo"><span>miaad shop</span></div>
+   <h1>به فروشگاه خوش آمدید</h1>
+   <p class="sub">برای ورود، نام و رمز عبور خود را وارد کنید.</p>
+   <label class="field"><span>نام کاربری</span><input id="username" autocomplete="username" placeholder="نام خود را وارد کنید" required></label>
+   <label class="field"><span>رمز عبور</span><input id="password" type="password" autocomplete="current-password" placeholder="رمز عبور" required></label>
+   <button class="primary" type="submit">ورود به فروشگاه</button>
+   <p class="note">نسخه نمایشی — برای ورود، هر نام و رمزی قابل قبول است.</p>
+  </form>
+ </div>
+</section>
+<section id="shopScreen" class="screen">
+ <header><div class="header-inner">
+  <div class="brand" aria-label="miaad cart shop"><span>miaad</span><span class="brand-mark" aria-hidden="true"></span><span>shop</span></div>
+  <div class="header-tools">
+   <div class="search"><input id="searchInput" type="search" placeholder="جستجو در miaad shop" aria-label="جستجو در miaad shop" autocomplete="off"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg><div id="searchSuggestions" class="search-suggestions" role="listbox" aria-label="پیشنهادهای جستجو"></div></div>
+   <button class="header-bell" id="headerBell" type="button" aria-label="اعلان‌ها" title="اعلان‌ها"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg><span class="bell-dot"></span></button>
+  </div>
+ </div></header>
+ <main>
+  <section class="hero"><div><h2>خریدی هوشمند، انتخابی آسان</h2><p>پیشنهادهای ویژه و محصولات منتخب را در miaad shop کشف کنید.</p><button class="hero-btn" id="heroShopBtn">مشاهده محصولات ←</button></div><div class="hero-art">🛍️</div></section>
+  <div class="welcome"><div><h2>چه چیزی نیاز دارید؟</h2><p>محصول موردنظرتان را پیدا کنید.</p></div><span class="pill">✨ خرید آسان</span></div>
+  <div class="section-title"><h3>دسته‌بندی‌ها</h3><span>انتخاب دسته</span></div>
+  <div class="categories" id="categories">
+   <button class="category selected" data-category="همه"><span class="emoji">✦</span><b>همه کالاها</b></button>
+   <button class="category" data-category="پوشاک"><span class="emoji">👕</span><b>پوشاک</b></button>
+   <button class="category" data-category="دیجیتال"><span class="emoji">🎧</span><b>دیجیتال</b></button>
+   <button class="category" data-category="خانه"><span class="emoji">🏠</span><b>خانه</b></button>
+   <button class="category" data-category="زیبایی"><span class="emoji">🧴</span><b>زیبایی</b></button>
+   <button class="category" data-category="ورزشی"><span class="emoji">⚽</span><b>ورزشی</b></button>
+  </div>
+  <div class="section-title"><h3 id="productHeading">محصولات پیشنهادی</h3><span id="resultCount"></span></div>
+  <div class="filterbar"><select id="sortSelect" aria-label="مرتب‌سازی"><option value="recommended">مرتب‌سازی: پیشنهادی</option><option value="low">ارزان‌ترین</option><option value="high">گران‌ترین</option><option value="name">نام محصول</option></select><select id="priceFilter" aria-label="فیلتر قیمت"><option value="all">همه قیمت‌ها</option><option value="500000">تا ۵۰۰ هزار تومان</option><option value="1000000">تا ۱ میلیون تومان</option><option value="1500000">تا ۱.۵ میلیون تومان</option></select><button id="favoritesFilter">♡ فقط علاقه‌مندی‌ها</button><button id="clearFilters">پاک کردن فیلترها</button></div>
+  <div class="products" id="products"></div>
+ </main>
+
+ <section id="profilePage" class="profile-page" hidden>
+  <div class="profile-heading"><div class="profile-avatar">♙</div><div><h2>پروفایل من</h2><p>اطلاعات حساب کاربری شما</p></div></div>
+  <div class="profile-card">
+   <div class="profile-row"><span>نام کاربری</span><strong id="profileName">کاربر</strong></div>
+   <div class="profile-row"><span>وضعیت حساب</span><strong class="status">فعال</strong></div>
+   <div class="profile-row"><span>تعداد کالا در سبد خرید</span><strong id="profileCart">۰</strong></div><div class="profile-row"><span>علاقه‌مندی‌ها</span><strong id="profileFavorites">۰</strong></div><div class="profile-row"><span>سفارش‌های ثبت‌شده</span><strong id="profileOrders">۰</strong></div><button class="details-btn" id="viewOrdersBtn" style="width:100%;margin:14px 0">مشاهده تاریخچه سفارش‌ها</button>
+  </div>
+  <button class="logout-btn" id="logoutBtn" type="button">خروج از حساب کاربری</button>
+ </section>
+ <section id="cartPage" class="cart-page" hidden>
+  <div class="cart-heading"><div><h2>سبد خرید من</h2><p>محصولاتی که انتخاب کرده‌اید</p></div><span class="pill" id="cartItemCount">۰ کالا</span></div>
+  <div class="cart-list" id="cartList"></div>
+  <div class="cart-summary" id="cartSummary" hidden>
+   <div class="summary-row"><span>هزینه ارسال</span><strong id="shippingTotal">۰ تومان</strong></div><div class="summary-row"><span>مبلغ قابل پرداخت</span><strong id="cartTotal">۰ تومان</strong></div>
+   <button class="checkout-btn" id="checkoutBtn">ادامه فرایند خرید</button>
+  </div>
+ </section>
+<section id="ordersPage" class="cart-page" hidden><div class="cart-heading"><div><h2>تاریخچه سفارش‌ها</h2><p>سفارش‌های ثبت‌شده شما</p></div></div><div id="ordersList"></div></section>
+ <section id="searchPage" class="search-page" hidden>
+  <div class="search-page-top"><div><h2>جست‌وجوی کالاها</h2><p>چی لازم داری؟ از اینجا شروع کن 👀</p></div><button id="closeSearchPage" class="search-page-close" type="button" aria-label="بستن صفحه جستجو و برگشت به خانه" title="برگشت به صفحه اصلی" onclick="showPage('خانه'); return false;">×</button></div>
+  <div class="search-page-box"><span aria-hidden="true">⌕</span><input id="searchPageInput" type="search" placeholder="نام کالا رو وارد کن..." autocomplete="off" aria-label="جستجوی کالا در صفحه جستجو"><button id="searchPageSubmit" type="button">جستجو</button></div>
+  <section class="search-page-section"><div class="search-page-section-head"><h3>🕘 جست‌وجوهای اخیر</h3><button id="clearRecentSearches" type="button">پاک کردن</button></div><div id="recentSearchList" class="recent-search-list"></div></section>
+  <section class="search-page-section"><div class="search-page-section-head"><h3>🔥 کالاهای پرطرفدار</h3><span style="font-size:11px;color:var(--muted)">پیشنهاد Miaad Shop</span></div><div id="popularSearchList" class="popular-search-grid"></div></section>
+ </section>
+ <nav class="bottom-nav"><div class="nav-inner">
+  <button class="nav-item active" data-tab="خانه"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg></span><span>خانه</span></button>
+  <button class="nav-item" data-tab="جست‌وجو"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></span><span>جستجو</span></button>
+  <button class="nav-item" data-tab="علاقه‌مندی‌ها"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.8c0 5.2-8.8 11-8.8 11s-8.8-5.8-8.8-11A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.8 2.6Z"/></svg></span><span>علاقه‌مندی‌ها</span></button>
+  <button class="nav-item" data-tab="سبد خرید"><span class="ico icon-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg><b id="cartCount" class="nav-badge">۰</b></span><span>سبد خرید</span></button>
+  <button class="nav-item" data-tab="حساب من"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span>حساب من</span></button>
+ </div></nav>
+ <button class="support-tag" id="supportTag" type="button" aria-label="پشتیبانی">پشتیبانی</button>
+</section>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const items=[
+ {name:'تی‌شرت روزمره',category:'پوشاک',emoji:'👕',image:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=85'],keywords:'لباس تیشرت تی شرت تی‌شرت مردانه زنانه نخی',price:420000,desc:'راحت و مناسب استفاده روزانه'},
+ {name:'هدفون بی‌سیم',category:'دیجیتال',emoji:'🎧',image:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=900&q=85'],keywords:'هدفون هندزفری هدست ایرپاد بلوتوث صدا موسیقی',price:1250000,desc:'صدای شفاف و طراحی سبک'},
+ {name:'چراغ رومیزی',category:'خانه',emoji:'💡',image:'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1507473906263-9b7f9f4c4f4a?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85'],keywords:'چراغ لامپ روشنایی رومیزی دکور خانه میز',price:680000,desc:'نور ملایم برای میز کار'},
+ {name:'کرم مرطوب‌کننده',category:'زیبایی',emoji:'🧴',image:'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=900&q=85'],keywords:'کرم مرطوب کننده مرطوب‌کننده پوست مراقبت زیبایی لوسیون',price:315000,desc:'مناسب استفاده روزانه'},
+ {name:'کفش ورزشی',category:'ورزشی',emoji:'👟',image:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=900&q=85'],keywords:'کفش کتانی کتونی اسنیکر ورزشی پیاده روی جردن',price:1480000,desc:'سبک برای پیاده‌روی و ورزش'},
+ {name:'کیف دستی',category:'پوشاک',emoji:'👜',image:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=85'],keywords:'کیف دستی کیف زنانه کیف دوشی کیف پول',price:790000,desc:'جمع‌وجور و کاربردی'}
+ ,{name:'ساعت مچی',category:'پوشاک',emoji:'⌚',image:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1508057198894-247b23fe5ade?auto=format&fit=crop&w=900&q=85'],keywords:'ساعت مچی ساعت هوشمند زمان',price:980000,desc:'طراحی ساده و شیک'},
+ {name:'کوله‌پشتی',category:'پوشاک',emoji:'🎒',image:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1622560480654-d96214fdc887?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1581605405669-f2827f4f8b34?auto=format&fit=crop&w=900&q=85'],keywords:'کوله کیف مدرسه دانشجویی سفر',price:650000,desc:'مناسب مدرسه، دانشگاه و سفر'},
+ {name:'ماوس بی‌سیم',category:'دیجیتال',emoji:'🖱️',image:'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=900&q=85'],keywords:'ماوس موس وایرلس بی سیم کامپیوتر لپ تاپ',price:390000,desc:'مناسب کار و استفاده روزمره'},
+ {name:'عینک آفتابی',category:'پوشاک',emoji:'🕶️',image:'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?auto=format&fit=crop&w=900&q=85'],keywords:'عینک آفتابی عینک دودی آفتاب',price:520000,desc:'سبک و مناسب استفاده روزانه'},
+ {name:'ماگ سرامیکی',category:'خانه',emoji:'☕',image:'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=900&q=85'],keywords:'ماگ لیوان فنجان قهوه چای سرامیک',price:180000,desc:'برای نوشیدنی‌های گرم و سرد'},
+ {name:'توپ فوتبال',category:'ورزشی',emoji:'⚽',image:'https://images.unsplash.com/photo-1614632537423-1e6c2e7e0e9b?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1614632537423-1e6c2e7e0e9b?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=900&q=85'],keywords:'توپ فوتبال فوتسال ورزش',price:450000,desc:'مناسب بازی و تمرین'}
+,
+ {name:'لپ\u200cتاپ',category:'دیجیتال',emoji:'💻',image:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=85'],keywords:'لپ تاپ کامپیوتر نوت بوک رایانه',price:18900000,desc:'مناسب کارهای روزانه و تحصیل'},
+ {name:'گوشی هوشمند',category:'دیجیتال',emoji:'📱',image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=85'],keywords:'گوشی موبایل تلفن هوشمند اندروید',price:12500000,desc:'گوشی هوشمند با طراحی ساده'},
+ {name:'دوربین عکاسی',category:'دیجیتال',emoji:'📷',image:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=85'],keywords:'دوربین عکاسی camera photography',price:8200000,desc:'برای ثبت عکس و خاطره'},
+ {name:'کیبورد کامپیوتر',category:'دیجیتال',emoji:'⌨️',image:'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=85'],keywords:'کیبورد صفحه کلید کامپیوتر تایپ',price:1150000,desc:'صفحه\u200cکلید مناسب میز کار'},
+ {name:'اسپیکر قابل حمل',category:'دیجیتال',emoji:'🔊',image:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=900&q=85'],keywords:'اسپیکر بلندگو بلوتوث صدا موزیک',price:980000,desc:'پخش موسیقی در خانه و سفر'},
+ {name:'گلدان گیاه آپارتمانی',category:'خانه',emoji:'🪴',image:'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=85'],keywords:'گلدان گیاه آپارتمانی سبز دکور',price:350000,desc:'گیاه تزئینی برای فضای خانه'},
+ {name:'مبل راحتی',category:'خانه',emoji:'🛋️',image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85'],keywords:'مبل کاناپه sofa نشیمن خانه',price:15800000,desc:'مبل برای فضای نشیمن'},
+ {name:'صندلی مدرن',category:'خانه',emoji:'🪑',image:'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=900&q=85'],keywords:'صندلی صندلی مدرن chair میز',price:3200000,desc:'صندلی مدرن برای خانه یا دفتر'},
+ {name:'عطر و ادکلن',category:'زیبایی',emoji:'🧴',image:'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=85'],keywords:'عطر ادکلن perfume رایحه',price:1450000,desc:'عطر با بسته\u200cبندی شیشه\u200cای'},
+ {name:'رژ لب',category:'زیبایی',emoji:'💄',image:'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=900&q=85'],keywords:'رژ لب آرایش lipstick زیبایی',price:290000,desc:'رژ لب برای آرایش روزانه'},
+ {name:'بطری آب ورزشی',category:'ورزشی',emoji:'🚰',image:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=900&q=85'],keywords:'بطری آب قمقمه water bottle',price:210000,desc:'قمقمه مناسب مدرسه و ورزش'},
+ {name:'مت یوگا',category:'ورزشی',emoji:'🧘',image:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=85'],keywords:'مت یوگا زیرانداز ورزش yoga mat',price:620000,desc:'زیرانداز برای تمرین یوگا'},
+ {name:'دمبل ورزشی',category:'ورزشی',emoji:'🏋️',image:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=900&q=85'],keywords:'دمبل وزنه تمرین قدرتی ورزش',price:780000,desc:'وسیله تمرین قدرتی در خانه'},
+ {name:'کتاب داستان',category:'کتاب و لوازم\u200cالتحریر',emoji:'📚',image:'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=900&q=85'],keywords:'کتاب داستان رمان کتابخوانی',price:260000,desc:'کتاب چاپی برای مطالعه'},
+ {name:'کیف پول',category:'پوشاک',emoji:'👛',image:'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=900&q=85'],keywords:'کیف پول wallet جاکارتی',price:390000,desc:'کیف پول جمع\u200cوجور'},
+ {name:'کمربند چرمی',category:'پوشاک',emoji:'🧷',image:'https://images.unsplash.com/photo-1624222247344-550fb8b5a2f7?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1624222247344-550fb8b5a2f7?auto=format&fit=crop&w=900&q=85'],keywords:'کمربند belt چرم پوشاک',price:420000,desc:'کمربند برای استفاده روزمره'},
+ {name:'کفش پاشنه\u200cدار',category:'پوشاک',emoji:'👠',image:'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=85'],keywords:'کفش پاشنه بلند زنانه مجلسی',price:1650000,desc:'کفش مجلسی پاشنه\u200cدار'},
+ {name:'عینک طبی',category:'پوشاک',emoji:'👓',image:'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1574258495973-f010dfbb5371?auto=format&fit=crop&w=900&q=85'],keywords:'عینک طبی فریم عینک vision',price:690000,desc:'فریم عینک طبی'},
+ {name:'توپ بسکتبال',category:'ورزشی',emoji:'🏀',image:'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=900&q=85'],keywords:'توپ بسکتبال basketball ورزش',price:520000,desc:'مناسب بازی بسکتبال'},
+ {name:'پتو نرم',category:'خانه',emoji:'🛏️',image:'https://images.unsplash.com/photo-1600369671236-e74521d4b6ad?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1600369671236-e74521d4b6ad?auto=format&fit=crop&w=900&q=85'],keywords:'پتو روانداز blanket خانه خواب',price:890000,desc:'پتوی نرم برای استراحت'},
+ {name:'چراغ مطالعه',category:'خانه',emoji:'🔆',image:'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85'],keywords:'چراغ مطالعه لامپ رومیزی نور',price:470000,desc:'چراغ مطالعه برای میز کار'},
+ {name:'مانتو روزمره',category:'پوشاک',emoji:'🧥',image:'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=900&q=85'],keywords:'مانتو لباس زنانه پوشاک روزمره',price:1380000,desc:'مانتو ساده برای استفاده روزمره'},
+ {name:'شلوار جین',category:'پوشاک',emoji:'👖',image:'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&q=85'],keywords:'شلوار جین لی jeans denim',price:990000,desc:'شلوار جین برای استایل روزانه'},
+ {name:'جوراب ورزشی',category:'پوشاک',emoji:'🧦',image:'https://images.unsplash.com/photo-1582966772680-860e372bb558?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1582966772680-860e372bb558?auto=format&fit=crop&w=900&q=85'],keywords:'جوراب ورزشی پوشاک',price:120000,desc:'جوراب مناسب استفاده روزانه'}
+];
+// فقط کالاهای دارای تصویر مرجع مشخص نمایش داده می‌شوند؛ برای کاتالوگ بزرگ واقعی باید منبع محصول متصل شود.
+let selectedCategory='همه',cart=0,onlyFavorites=false;
+function readStore(key,fallback){try{const v=JSON.parse(localStorage.getItem(key)||'null');return v==null?fallback:v}catch(e){return fallback}}
+const cartItems=Object.assign({},readStore('miaadShopCart',{}));
+const favorites=new Set(readStore('miaadShopFavorites',[]));
+const orders=readStore('miaadShopOrders',[]);
+const reviewStore=readStore('miaadShopReviews',{});
+// نظرهای نمونه برای پیش‌نمایش رابط کاربری؛ به‌وضوح به‌عنوان محتوای نمایشی برچسب می‌خورند.
+const demoReviewTemplates=[
+ {rating:5,name:'محمد',text:'عالی بود و راضی بودم.',date:'نظر نمونه',demo:true},
+ {rating:5,name:'ریحانه',text:'بسیار خوب بود.',date:'نظر نمونه',demo:true},
+ {rating:4,name:'علی',text:'از خریدم راضی بودم؛ پیشنهاد می‌کنم.',date:'نظر نمونه',demo:true}
+];
+function getReviewsForProduct(name){const actual=reviewStore[name]||[];return actual.length?actual:demoReviewTemplates;}
+function persistShopState(){try{localStorage.setItem('miaadShopCart',JSON.stringify(cartItems));localStorage.setItem('miaadShopFavorites',JSON.stringify([...favorites]));localStorage.setItem('miaadShopOrders',JSON.stringify(orders));localStorage.setItem('miaadShopReviews',JSON.stringify(reviewStore));}catch(e){}}
+const faNum=n=>n.toLocaleString('fa-IR');
+const products=document.getElementById('products');
+let visibleProductLimit=36,filteredProducts=[];
+function getProductRatingLabel(name){const list=reviewStore[name]||[];if(!list.length)return 'نظرهای نمونه';const avg=list.reduce((a,r)=>a+Number(r.rating||0),0)/list.length;return avg.toFixed(1)+' · '+faNum(list.length)+' نظر'}
+function renderProducts(){
+ const q=document.getElementById('searchInput').value.trim().toLowerCase();
+ const maxPrice=document.getElementById('priceFilter')?.value||'all';
+ let list=items.filter(p=>(selectedCategory==='همه'||p.category===selectedCategory)&&(!q||p.name.toLocaleLowerCase('fa').startsWith(q))&&(maxPrice==='all'||p.price<=Number(maxPrice))&&(!onlyFavorites||favorites.has(p.name)));
+ const sort=document.getElementById('sortSelect')?.value||'recommended';
+ if(sort==='low')list.sort((a,b)=>a.price-b.price);if(sort==='high')list.sort((a,b)=>b.price-a.price);if(sort==='name')list.sort((a,b)=>a.name.localeCompare(b.name,'fa'));
+ filteredProducts=list;visibleProductLimit=36;
+ document.getElementById('resultCount').textContent=faNum(list.length)+' کالا';drawProductPage(q);
+}
+function drawProductPage(q=''){
+ const list=filteredProducts.slice(0,visibleProductLimit);
+ products.innerHTML=list.length?list.map(p=>`<article class="product"><div class="product-art" data-detail="${p.name}"><img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='${p.emoji}';this.parentElement.style.fontSize='48px'"></div><div class="product-tools"><span class="discount">پیشنهاد ویژه</span><button class="favorite-btn ${favorites.has(p.name)?'active':''}" data-fav="${p.name}" aria-label="افزودن به علاقه‌مندی‌ها">${favorites.has(p.name)?'♥':'♡'}</button></div><h4>${p.name}</h4><p class="desc">${p.desc}</p><div class="product-rating"><span>★ ★ ★ ★ ★</span><small>${getProductRatingLabel(p.name)}</small></div><div class="product-bottom"><span class="price">${faNum(p.price)} تومان</span><button class="add" data-add="${p.name}">افزودن +</button></div><button class="details-btn" style="width:100%;margin-top:10px" data-detail="${p.name}">جزئیات محصول</button></article>`).join(''):`<div class="empty">محصولی در فهرست فعلی پیدا نشد.<br><small>می‌توانید همین عبارت را در وب جست‌وجو کنید.</small><br><button class="details-btn" style="margin-top:12px" id="webSearchBtn">جست‌وجوی «${q.replace(/[&<>"']/g,' ')}» در وب ↗</button></div>`;
+ if(filteredProducts.length>visibleProductLimit)products.insertAdjacentHTML('beforeend',`<div class="empty" style="grid-column:1/-1"><p>نمایش ${faNum(visibleProductLimit)} از ${faNum(filteredProducts.length)} محصول</p><button class="primary" id="loadMoreProducts" style="max-width:280px">نمایش محصولات بیشتر</button></div>`);
+}
+products.addEventListener('click',e=>{if(e.target.id==='loadMoreProducts'){visibleProductLimit+=36;drawProductPage(document.getElementById('searchInput').value.trim().toLowerCase());}});
+function openDetails(name){
+ const p=items.find(x=>x.name===name);if(!p)return;
+ const pics=p.images&&p.images.length?p.images:[p.image];let current=0;
+ const categoryInfo={
+  'پوشاک':{about:'این کالا در دسته پوشاک و اکسسوری قرار می‌گیرد و می‌تواند برای استفاده روزمره یا تکمیل استایل به کار برود.',tips:['قبل از خرید، اندازه و فرم مناسب خود را بررسی کنید.','رنگ واقعی محصول ممکن است با توجه به نور نمایشگر کمی متفاوت دیده شود.','برای مراقبت بهتر، برچسب شست‌وشو یا راهنمای نگهداری محصول را بررسی کنید.']},
+  'دیجیتال':{about:'این کالا در گروه لوازم دیجیتال قرار دارد. پیش از خرید، سازگاری آن با دستگاه‌ها و نیازهای خود را بررسی کنید.',tips:['در صورت نیاز، نوع اتصال و سازگاری با دستگاه خود را بررسی کنید.','مشخصات فنی دقیق این نمونه در اطلاعات فروشگاه ثبت نشده است؛ آن‌ها را پیش از خرید از فروشنده تأیید کنید.','تصویرها برای نمایش ظاهری کالا هستند و مدل یا برند خاصی را تضمین نمی‌کنند.']},
+  'خانه':{about:'این کالا برای استفاده در خانه یا فضای کار در نظر گرفته شده است.',tips:['ابعاد محل استفاده را پیش از سفارش اندازه بگیرید.','رنگ و ظاهر ممکن است در نمایشگرهای مختلف اندکی تفاوت داشته باشد.','ابعاد، جنس و شیوه نگهداری دقیق در این نمونه فروشگاهی تأیید نشده‌اند.']},
+  'زیبایی':{about:'این کالا در دسته محصولات زیبایی و مراقبت شخصی قرار دارد.',tips:['ترکیبات، حجم و تاریخ انقضا را قبل از خرید از فروشنده بررسی کنید.','اگر پوست حساسی دارید، برچسب محصول و هشدارهای سازنده را بخوانید.','این صفحه اطلاعات تأییدشده‌ای درباره برند یا ترکیبات دقیق ارائه نمی‌کند.']},
+  'ورزشی':{about:'این کالا در دسته لوازم ورزشی قرار دارد و برای فعالیت یا تمرین قابل استفاده است.',tips:['متناسب با نوع فعالیت و سطح استفاده خود انتخاب کنید.','ابعاد، وزن یا سایز دقیق در این نمونه ثبت نشده و باید قبل از خرید تأیید شود.','پس از استفاده، مطابق راهنمای سازنده از کالا نگهداری کنید.']},
+  'کتاب و لوازمالتحریر':{about:'این کالا در گروه کتاب و لوازم مطالعه قرار دارد.',tips:['عنوان، نویسنده، ناشر و نوع چاپ را پیش از خرید بررسی کنید.','اطلاعات نسخه و تعداد صفحات در این نمونه ثبت نشده است.','تصویر نمایش داده‌شده ممکن است تصویر نمونه‌ای از همان نوع کالا باشد.']}
+ };
+ const info=categoryInfo[p.category]||{about:'این محصول در فروشگاه miaad shop فهرست شده است.',tips:['مشخصات کامل و موجودی واقعی این نمونه هنوز از منبع فروشگاهی تأیید نشده است.','در صورت نیاز، جزئیات دقیق را پیش از خرید از فروشنده بررسی کنید.']};
+ const keyDetails=[['نام محصول',p.name],['دسته‌بندی',p.category],['شناسه نمونه','MS-'+String(items.indexOf(p)+1001)],['قیمت درج‌شده',faNum(p.price)+' تومان']];
+ const wrap=document.createElement('div');wrap.className='modal-backdrop';wrap.id='detailModal';
+ wrap.innerHTML=`<div class="modal product-detail-modal" role="dialog" aria-modal="true" aria-label="جزئیات ${p.name}"><div class="modal-head"><div><small style="color:var(--muted)">miaad shop / جزئیات کالا</small><h3 style="margin:6px 0 0">${p.name}</h3></div><button class="modal-close" id="closeDetail">بستن ✕</button></div><div class="detail-art"><img id="galleryMain" src="${pics[0]}" alt="${p.name} - تصویر ۱" onerror="this.style.display='none';this.parentElement.textContent='${p.emoji}';this.parentElement.style.fontSize='90px'"></div><div class="gallery-controls"><button id="galleryPrev" aria-label="تصویر قبلی">❯ قبلی</button><span id="galleryCounter">تصویر ۱ از ${pics.length}</span><button id="galleryNext" aria-label="تصویر بعدی">بعدی ❮</button></div><div class="gallery-thumbs">${pics.map((src,i)=>`<button class="${i===0?'active':''}" data-gallery="${i}" aria-label="نمایش تصویر ${i+1}"><img src="${src}" alt="${p.name} تصویر ${i+1}" loading="lazy"></button>`).join('')}</div><div class="detail-price-row"><div><small style="color:var(--muted)">قیمت در فروشگاه</small><h2 style="color:var(--primary);margin:5px 0">${faNum(p.price)} <small style="font-size:12px">تومان</small></h2></div><span class="detail-stock">● نمونه نمایشی</span></div><section class="detail-section"><h4>درباره محصول</h4><p>${p.desc}؛ ${info.about}</p></section><section class="detail-section"><h4>مشخصات محصول</h4><div class="detail-specs">${keyDetails.map(([k,v])=>`<div class="detail-spec"><span>${k}</span><b>${v}</b></div>`).join('')}</div></section><section class="detail-section"><h4>نکاتی که قبل از خرید بدانید</h4><ul class="detail-tips">${info.tips.map(t=>`<li>${t}</li>`).join('')}</ul></section><section class="detail-section"><h4>⭐ امتیاز و نظر کاربران</h4><p style="font-size:12px;background:#fff7df;border:1px solid #f0d58b;border-radius:10px;padding:9px;color:#785b13">توجه: این نظرها نمونه و نمایشی هستند و هنوز از مشتریان واقعی ثبت نشده‌اند. با ثبت نظر کاربران، این نمونه‌ها نمایش داده نمی‌شوند.</p><div id="reviewSummary" style="font-size:12px;color:var(--muted)"></div><div id="reviewEntries"></div><form class="review-form" id="reviewForm"><label style="font-size:12px">امتیاز شما</label><div class="review-stars" id="reviewStars" aria-label="انتخاب امتیاز"><button type="button" class="review-star" data-rating="1" aria-label="1 ستاره">★</button><button type="button" class="review-star" data-rating="2" aria-label="2 ستاره">★</button><button type="button" class="review-star" data-rating="3" aria-label="3 ستاره">★</button><button type="button" class="review-star" data-rating="4" aria-label="4 ستاره">★</button><button type="button" class="review-star" data-rating="5" aria-label="5 ستاره">★</button></div><input id="reviewName" maxlength="35" placeholder="نام نمایشی (اختیاری)"><textarea id="reviewText" rows="3" maxlength="400" placeholder="تجربه یا نظر شما درباره محصول (اختیاری)"></textarea><button class="details-btn" type="submit">ثبت امتیاز و نظر</button></form></section><p class="detail-disclaimer">قیمت و توضیحات این صفحه نمونه‌ای هستند؛ موجودی، برند و مشخصات فنی واقعی از فروشنده دریافت نشده‌اند.</p><button class="primary" id="detailAdd">افزودن به سبد خرید</button></div>`;
+ let chosenRating=5;
+ function renderReviews(){const actual=reviewStore[p.name]||[];const list=actual.length?actual:demoReviewTemplates;const avg=list.length?list.reduce((a,r)=>a+Number(r.rating||0),0)/list.length:0;wrap.querySelector('#reviewSummary').textContent=list.length?`${actual.length?'میانگین':'امتیاز نمونه'} ${avg.toFixed(1)} از ۵ · ${faNum(list.length)} ${actual.length?'نظر':'نظر نمایشی'}`:'هنوز نظری ثبت نشده؛ اولین نفر باش!';wrap.querySelector('#reviewEntries').innerHTML=list.slice().reverse().map(r=>`<div class="review-entry"><div style="display:flex;justify-content:space-between;gap:8px"><b style="font-size:12px">${escapeHTML(r.name||'کاربر فروشگاه')}</b><span style="color:#e5a100">${'★'.repeat(Number(r.rating)||0)}${'☆'.repeat(5-(Number(r.rating)||0))}</span></div><small style="color:var(--muted)">${escapeHTML(r.date||'')}</small>${r.text?`<p>${escapeHTML(r.text)}</p>`:''}</div>`).join('');wrap.querySelectorAll('[data-rating]').forEach(b=>b.classList.toggle('selected',Number(b.dataset.rating)===chosenRating));}
+ function escapeHTML(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ renderReviews();
+ wrap.querySelector('#reviewStars').addEventListener('click',e=>{const b=e.target.closest('[data-rating]');if(!b)return;chosenRating=Number(b.dataset.rating);renderReviews();});
+ wrap.querySelector('#reviewForm').addEventListener('submit',async e=>{e.preventDefault();const name=wrap.querySelector('#reviewName').value.trim()||'کاربر فروشگاه';const text=wrap.querySelector('#reviewText').value.trim();const review={rating:chosenRating,name,text,date:new Date().toLocaleDateString('fa-IR')};if(!reviewStore[p.name])reviewStore[p.name]=[];reviewStore[p.name].push(review);persistShopState();renderReviews();renderProducts();wrap.querySelector('#reviewText').value='';try{const res=await fetch('/api/reviews/'+encodeURIComponent(p.name),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(review)});showToast(res.ok?'نظر در فروشگاه ذخیره شد.':'نظر روی همین دستگاه ذخیره شد.');}catch(err){showToast('نظر روی همین دستگاه ذخیره شد؛ سرور در دسترس نیست.');}});
+ fetch('/api/reviews/'+encodeURIComponent(p.name)).then(r=>r.ok?r.json():null).then(serverReviews=>{if(Array.isArray(serverReviews)&&serverReviews.length){reviewStore[p.name]=serverReviews;persistShopState();renderReviews();renderProducts();}}).catch(()=>{});
+ document.body.appendChild(wrap);
+ function setPic(i){current=(i+pics.length)%pics.length;const img=wrap.querySelector('#galleryMain');img.style.display='';img.src=pics[current];img.alt=p.name+' - تصویر '+(current+1);wrap.querySelector('#galleryCounter').textContent=`تصویر ${faNum(current+1)} از ${faNum(pics.length)}`;wrap.querySelectorAll('[data-gallery]').forEach(b=>b.classList.toggle('active',Number(b.dataset.gallery)===current));}
+ wrap.addEventListener('click',e=>{if(e.target===wrap||e.target.id==='closeDetail'){wrap.remove();return;}if(e.target.id==='galleryPrev'){setPic(current-1);return;}if(e.target.id==='galleryNext'){setPic(current+1);return;}const thumb=e.target.closest('[data-gallery]');if(thumb){setPic(Number(thumb.dataset.gallery));return;}if(e.target.id==='detailAdd'){cartItems[p.name]=(cartItems[p.name]||0)+1;updateCart();wrap.remove();showToast('محصول به سبد خرید اضافه شد.')}});
+ let touchX=null;const art=wrap.querySelector('.detail-art');art.addEventListener('touchstart',e=>touchX=e.changedTouches[0].screenX,{passive:true});art.addEventListener('touchend',e=>{if(touchX===null)return;const dx=e.changedTouches[0].screenX-touchX;if(Math.abs(dx)>35)setPic(current+(dx<0?1:-1));touchX=null},{passive:true});
+}
+
+function showSupportMessage(){
+ const old=document.getElementById('supportMessageModal');if(old)old.remove();
+ const modal=document.createElement('div');modal.id='supportMessageModal';
+ modal.style.cssText='position:fixed;inset:0;z-index:1000;background:#15152599;display:grid;place-items:center;padding:22px;';
+ const apps=[
+  ['بله','https://www.google.com/s2/favicons?domain=bale.ai&sz=128','https://ble.ir/'],
+  ['روبیکا','https://www.google.com/s2/favicons?domain=rubika.ir&sz=128','https://rubika.ir/'],
+  ['تلگرام','https://www.google.com/s2/favicons?domain=telegram.org&sz=128','https://t.me/fereshte_dard'],
+  ['سروش','https://www.google.com/s2/favicons?domain=splus.ir&sz=128','https://splus.ir/'],
+  ['ایتا','https://www.google.com/s2/favicons?domain=eitaa.com&sz=128','https://eitaa.com/']
+ ];
+ const appHtml=apps.map(([name,src,url])=>`<a class="support-app" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${name}"><img src="${src}" alt="لوگوی واقعی ${name}" loading="lazy"><span>${name}</span></a>`).join('');
+ modal.innerHTML=`<div dir="rtl" style="position:relative;width:min(100%,370px);background:#fff;border-radius:22px;padding:25px 18px 22px;box-shadow:0 18px 60px #0004;text-align:center;border:1px solid #f0d9e0;"><button type="button" id="closeSupportMessage" aria-label="بستن" style="position:absolute;left:12px;top:10px;border:0;background:#f4f4f7;border-radius:50%;width:30px;height:30px;font-size:19px;color:#555;">×</button><div style="font-size:28px;margin-bottom:12px;">📢</div><p style="font-family:Tahoma,Arial,sans-serif;font-size:14px;line-height:2.2;color:#292943;margin:0 0 15px;">سلام! بنده میعاد هستم اگه مشکلی برات پیش اومده میتونی به من پیام بدی تا مشکلت رو برطرف کنم📢</p><a href="https://t.me/fereshte_dard" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:linear-gradient(100deg,#229ed9,#6a5cff);color:white;text-decoration:none;padding:10px 18px;border-radius:12px;font-family:Tahoma,Arial,sans-serif;font-weight:bold;direction:ltr;">@fereshte_dard</a><div class="support-apps">${appHtml}</div></div>`;
+ document.body.appendChild(modal);
+ modal.addEventListener('click',e=>{if(e.target===modal||e.target.id==='closeSupportMessage')modal.remove();});
+}
+if(document.getElementById('supportTag'))document.getElementById('supportTag').addEventListener('click',showSupportMessage);
+
+function showLoginScreen(){
+ const login=document.getElementById('loginScreen');
+ const shop=document.getElementById('shopScreen');
+ // خروج کامل از نمای فروشگاه؛ صفحه‌های داخلی را می‌بندیم تا ورود دوباره گیر نکند.
+ shop.classList.remove('active');
+ login.classList.add('active');
+ ['profilePage','cartPage','ordersPage','searchPage','popularPage'].forEach(id=>{
+   const page=document.getElementById(id);
+   if(page) page.hidden=true;
+ });
+ document.querySelectorAll('.bottom-nav .nav-item, .nav-bottom .nav-item').forEach(btn=>btn.classList.remove('active'));
+ document.getElementById('password').value='';
+ const userInput=document.getElementById('username');
+ if(userInput) userInput.focus({preventScroll:true});
+}
+function showShopScreen(name){
+ document.getElementById('loginScreen').classList.remove('active');
+ document.getElementById('shopScreen').classList.add('active');
+ document.getElementById('userName').textContent=name;
+ showPage('خانه');
+ renderProducts();
+ updateCart();
+}
+document.getElementById('loginForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const name=document.getElementById('username').value.trim();
+ const password=document.getElementById('password').value;
+ if(!name || !password){showToast('نام کاربری و رمز عبور را وارد کنید.');return;}
+ // نسخه فعلی ورود نمایشی است؛ هر نام و رمز غیرخالی پذیرفته می‌شود.
+ showShopScreen(name);
+ document.getElementById('password').value='';
+});
+document.getElementById('categories').addEventListener('click',e=>{
+ const btn=e.target.closest('[data-category]');if(!btn)return;
+ selectedCategory=btn.dataset.category;
+ document.querySelectorAll('.category').forEach(b=>b.classList.toggle('selected',b===btn));
+ document.getElementById('productHeading').textContent=selectedCategory==='همه'?'محصولات پیشنهادی':selectedCategory;
+ renderProducts();
+});
+document.getElementById('headerBell')?.addEventListener('click',()=>{
+ const old=document.getElementById('notificationsModal');if(old)old.remove();
+ const modal=document.createElement('div');modal.id='notificationsModal';modal.className='modal-backdrop';
+ modal.innerHTML=`<div class="modal" role="dialog" aria-modal="true" aria-label="اعلان‌های Miaad Shop" style="max-width:430px;width:calc(100% - 28px);padding:0;overflow:hidden;border-radius:22px;background:#fff;box-shadow:0 22px 70px #25133b35;">
+ <div style="padding:20px;background:linear-gradient(120deg,#fff1f7,#f2edff);border-bottom:1px solid #eee4f6;display:flex;align-items:center;justify-content:space-between;gap:12px"><div><h3 style="margin:0;color:#39224f;font-size:18px">🔔 اعلان‌های Miaad Shop</h3><p style="margin:6px 0 0;color:#81718f;font-size:12px">خبرهای تازه فروشگاه برای شما</p></div><button type="button" id="closeNotifications" aria-label="بستن" style="border:0;border-radius:50%;width:34px;height:34px;background:#fff;color:#65427c;font-size:22px;cursor:pointer">×</button></div>
+ <div style="padding:12px 16px 18px;display:grid;gap:10px">
+ <div style="display:flex;gap:12px;align-items:flex-start;padding:13px;border:1px solid #f0e5f7;border-radius:15px"><span style="font-size:23px">🛍️</span><div><b style="display:block;color:#39224f;font-size:13px;margin-bottom:5px">به Miaad Shop خوش اومدی!</b><span style="font-size:12px;line-height:1.9;color:#766b82">محصولات رو بگرد، جزئیاتشون رو ببین و کالاهای موردعلاقه‌ات رو راحت پیدا کن.</span></div></div>
+ <div style="display:flex;gap:12px;align-items:flex-start;padding:13px;border:1px solid #f0e5f7;border-radius:15px"><span style="font-size:23px">🔎</span><div><b style="display:block;color:#39224f;font-size:13px;margin-bottom:5px">جست‌وجوی سریع‌تر</b><span style="font-size:12px;line-height:1.9;color:#766b82">چند حرف اول اسم کالا رو بنویس تا پیشنهادهای مرتبط زیر کادر جست‌وجو ظاهر بشن.</span></div></div>
+ <div style="display:flex;gap:12px;align-items:flex-start;padding:13px;border:1px solid #f0e5f7;border-radius:15px"><span style="font-size:23px">💜</span><div><b style="display:block;color:#39224f;font-size:13px;margin-bottom:5px">نظرت برامون مهمه</b><span style="font-size:12px;line-height:1.9;color:#766b82">اگر سوال یا مشکلی داشتی، از دکمه پشتیبانی استفاده کن تا راه ارتباطی رو ببینی.</span></div></div>
+ <p style="margin:2px 4px 0;color:#9a8ca5;font-size:10px;text-align:center">این‌ها پیام‌های خوش‌آمدگویی و راهنمای فروشگاه هستند.</p>
+ </div></div>`;
+ document.body.appendChild(modal);
+ modal.addEventListener('click',e=>{if(e.target===modal||e.target.id==='closeNotifications')modal.remove();});
+});
+const RECENT_SEARCH_KEY='miaadShopRecentSearches';
+function getRecentSearches(){try{return JSON.parse(localStorage.getItem(RECENT_SEARCH_KEY)||'[]').filter(x=>typeof x==='string').slice(0,8)}catch(e){return []}}
+function saveRecentSearch(q){q=(q||'').trim();if(!q)return;const arr=getRecentSearches().filter(x=>x.toLocaleLowerCase('fa')!==q.toLocaleLowerCase('fa'));arr.unshift(q);try{localStorage.setItem(RECENT_SEARCH_KEY,JSON.stringify(arr.slice(0,8)))}catch(e){}renderSearchLanding()}
+function runShopSearch(q){q=(q||'').trim();if(!q)return;saveRecentSearch(q);document.getElementById('searchInput').value=q;document.getElementById('searchPageInput').value=q;showPage('خانه');renderProducts();document.getElementById('productHeading')?.scrollIntoView({behavior:'smooth',block:'start'});}
+function renderSearchLanding(){
+ const recent=document.getElementById('recentSearchList');if(!recent)return;
+ const searches=getRecentSearches();recent.innerHTML=searches.length?searches.map(q=>`<button class="recent-search-chip" type="button" data-recent-search="${q.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">🕘 ${q}</button>`).join(''):'<span style="font-size:12px;color:var(--muted)">هنوز چیزی جست‌وجو نکردی.</span>';
+ const popular=document.getElementById('popularSearchList');
+ const hotNames=['هدفون بی‌سیم','تی‌شرت روزمره','لپ‌تاپ','چراغ رومیزی','ماگ سرامیکی','توپ فوتبال'];
+ const hot=hotNames.map(n=>items.find(p=>p.name===n)).filter(Boolean);
+ popular.innerHTML=hot.map(p=>`<button class="popular-search-item" type="button" data-popular-search="${p.name.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><img src="${p.image}" alt="" onerror="this.style.display='none'"><span>${p.name}<small>${p.category} · ${faNum(p.price)} تومان</small></span></button>`).join('');
+}
+document.getElementById('searchPageInput').addEventListener('input',e=>{document.getElementById('searchInput').value=e.target.value;});
+document.getElementById('searchPageInput').addEventListener('keydown',e=>{if(e.key==='Enter')runShopSearch(e.target.value);});
+document.getElementById('searchPageSubmit').addEventListener('click',()=>runShopSearch(document.getElementById('searchPageInput').value));
+document.getElementById('recentSearchList').addEventListener('click',e=>{const b=e.target.closest('[data-recent-search]');if(b)runShopSearch(b.dataset.recentSearch);});
+document.getElementById('popularSearchList').addEventListener('click',e=>{const b=e.target.closest('[data-popular-search]');if(b)runShopSearch(b.dataset.popularSearch);});
+document.getElementById('clearRecentSearches').addEventListener('click',()=>{try{localStorage.removeItem(RECENT_SEARCH_KEY)}catch(e){}renderSearchLanding();});
+const searchBox=document.getElementById('searchInput');
+const suggestionBox=document.getElementById('searchSuggestions');
+function updateSearchSuggestions(){
+ const q=searchBox.value.trim().toLocaleLowerCase('fa');
+ if(!q){suggestionBox.classList.remove('show');suggestionBox.innerHTML='';return;}
+ const matches=items.filter(p=>p.name.toLocaleLowerCase('fa').startsWith(q)).slice(0,6);
+ suggestionBox.innerHTML=matches.length?matches.map(p=>`<button type="button" class="search-suggestion" role="option" data-suggest-product="${p.name}"><img src="${p.image}" alt="" onerror="this.style.display='none'"><span><span class="suggestion-name">${p.name}</span><span class="suggestion-meta">${p.category}</span></span><span class="suggestion-price">${faNum(p.price)} تومان</span></button>`).join(''):'<div class="search-suggestion-empty">محصولی با این حروف پیدا نشد</div>';
+ suggestionBox.classList.add('show');
+}
+searchBox.addEventListener('input',()=>{renderProducts();updateSearchSuggestions();if(searchBox.value.trim())document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.tab==='جست‌وجو'));});
+suggestionBox.addEventListener('click',e=>{const item=e.target.closest('[data-suggest-product]');if(!item)return;searchBox.value=item.dataset.suggestProduct;saveRecentSearch(searchBox.value);suggestionBox.classList.remove('show');renderProducts();document.getElementById('productHeading')?.scrollIntoView({behavior:'smooth',block:'start'});});
+document.addEventListener('click',e=>{if(!e.target.closest('.search'))suggestionBox.classList.remove('show');});
+searchBox.addEventListener('keydown',e=>{if(e.key==='Escape')suggestionBox.classList.remove('show');if(e.key==='Enter'){suggestionBox.classList.remove('show');saveRecentSearch(searchBox.value);renderProducts();}});
+products.addEventListener('click',e=>{const b=e.target.closest('#webSearchBtn');if(b){const q=document.getElementById('searchInput').value.trim();if(q)window.open('https://www.google.com/search?tbm=shop&q='+encodeURIComponent(q),'_blank','noopener');}});
+products.addEventListener('click',e=>{
+ const fav=e.target.closest('[data-fav]');if(fav){const n=fav.dataset.fav;if(favorites.has(n))favorites.delete(n);else favorites.add(n);persistShopState();document.getElementById('profileFavorites').textContent=faNum(favorites.size);renderProducts();return;}
+ const detail=e.target.closest('[data-detail]');if(detail){openDetails(detail.dataset.detail);return;}
+ const btn=e.target.closest('[data-add]');if(!btn)return;
+ const item=items.find(p=>p.name===btn.dataset.add);if(item)cartItems[item.name]=(cartItems[item.name]||0)+1;
+ updateCart();showToast('«'+btn.dataset.add+'» به سبد خرید اضافه شد.');
+});
+ document.getElementById('sortSelect').addEventListener('change',renderProducts);
+ document.getElementById('priceFilter').addEventListener('change',renderProducts);
+ document.getElementById('favoritesFilter').addEventListener('click',()=>{onlyFavorites=!onlyFavorites;document.getElementById('favoritesFilter').classList.toggle('active',onlyFavorites);document.getElementById('favoritesFilter').textContent=onlyFavorites?'♥ نمایش همه محصولات':'♡ فقط علاقه‌مندی‌ها';showPage('خانه');renderProducts();});
+ document.getElementById('clearFilters').addEventListener('click',()=>{document.getElementById('searchInput').value='';document.getElementById('sortSelect').value='recommended';document.getElementById('priceFilter').value='all';selectedCategory='همه';onlyFavorites=false;document.getElementById('favoritesFilter').classList.remove('active');document.getElementById('favoritesFilter').textContent='♡ فقط علاقه‌مندی‌ها';document.querySelectorAll('.category').forEach(b=>b.classList.toggle('selected',b.dataset.category==='همه'));renderProducts();});
+ document.getElementById('heroShopBtn').addEventListener('click',()=>document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'}));
+function showPage(page){
+ const home=document.querySelector('main');
+ const profile=document.getElementById('profilePage');
+ const cartPage=document.getElementById('cartPage');
+ const ordersPage=document.getElementById('ordersPage');
+ const searchPage=document.getElementById('searchPage');
+ home.hidden=page!=='خانه';
+ profile.hidden=page!=='حساب من';
+ cartPage.hidden=page!=='سبد خرید';
+ ordersPage.hidden=page!=='سفارش‌ها';
+ searchPage.hidden=page!=='جست‌وجو';
+ document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.tab===page));
+ if(page==='سبد خرید'){renderCart();window.scrollTo({top:0,behavior:'smooth'});}
+ else if(page==='حساب من'){
+  document.getElementById('profileName').textContent=document.getElementById('userName').textContent;
+  document.getElementById('profileCart').textContent=faNum(cart);document.getElementById('profileFavorites').textContent=faNum(favorites.size);document.getElementById('profileOrders').textContent=faNum(orders.length);
+  window.scrollTo({top:0,behavior:'smooth'});
+ }else if(page==='سفارش‌ها'){renderOrders();window.scrollTo({top:0,behavior:'smooth'});}
+ else if(page==='جست‌وجو'){renderSearchLanding();window.scrollTo({top:0,behavior:'smooth'});}
+ else if(page==='خانه'){window.scrollTo({top:0,behavior:'smooth'});}
+}
+document.getElementById('closeSearchPage').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();showPage('خانه');});
+// Keep the close control reliable even when the page is opened on mobile.
+
+document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>{
+ const tab=btn.dataset.tab;
+ if(tab==='خانه') showPage('خانه');
+ else if(tab==='حساب من') showPage('حساب من');
+ else if(tab==='جست‌وجو'){showPage('جست‌وجو');renderSearchLanding();document.getElementById('searchPageInput').value='';setTimeout(()=>document.getElementById('searchPageInput').focus(),80);}
+ else if(tab==='سبد خرید') showPage('سبد خرید');
+ else if(tab==='علاقه‌مندی‌ها'){onlyFavorites=true;document.getElementById('favoritesFilter').classList.add('active');document.getElementById('favoritesFilter').textContent='♥ نمایش همه محصولات';showPage('خانه');renderProducts();}
+}));
+
+function updateCart(){
+ persistShopState();
+ cart=Object.values(cartItems).reduce((sum,qty)=>sum+qty,0);
+ document.getElementById('cartCount').textContent=faNum(cart);
+ document.getElementById('profileCart').textContent=faNum(cart);
+ renderCart();
+}
+function renderCart(){
+ const list=document.getElementById('cartList');
+ const chosen=items.filter(p=>cartItems[p.name]);
+ document.getElementById('cartItemCount').textContent=faNum(cart)+' کالا';
+ document.getElementById('cartSummary').hidden=chosen.length===0;
+ if(!chosen.length){list.innerHTML='<div class="empty">🛒<br><br>سبد خرید شما خالی است.<br><br><button class="add" id="backToShop">مشاهده محصولات</button></div>';document.getElementById('cartTotal').textContent='۰ تومان';document.getElementById('shippingTotal').textContent='۰ تومان';return;}
+ list.innerHTML=chosen.map(p=>`<article class="cart-item"><div class="cart-art"><img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='${p.emoji}';this.parentElement.style.fontSize='34px'"></div><div class="cart-info"><h4>${p.name}</h4><p>${faNum(p.price)} تومان برای هر عدد</p><div class="cart-actions"><button class="qty-btn" data-qty="minus" data-name="${p.name}">−</button><strong>${faNum(cartItems[p.name])}</strong><button class="qty-btn" data-qty="plus" data-name="${p.name}">+</button><button class="remove-btn" data-remove="${p.name}">حذف</button></div></div><strong class="price">${faNum(p.price*cartItems[p.name])} تومان</strong></article>`).join('');
+ const total=chosen.reduce((sum,p)=>sum+p.price*cartItems[p.name],0);
+ const shipping=total>=1500000?0:65000;document.getElementById('shippingTotal').textContent=shipping===0?'رایگان':faNum(shipping)+' تومان';document.getElementById('cartTotal').textContent=faNum(total+shipping)+' تومان';
+}
+document.getElementById('cartList').addEventListener('click',e=>{
+ if(e.target.id==='backToShop'){showPage('خانه');return;}
+ const qtyBtn=e.target.closest('[data-qty]');
+ if(qtyBtn){const name=qtyBtn.dataset.name;if(qtyBtn.dataset.qty==='plus')cartItems[name]++;else cartItems[name]--;if(cartItems[name]<=0)delete cartItems[name];updateCart();return;}
+ const removeBtn=e.target.closest('[data-remove]');if(removeBtn){delete cartItems[removeBtn.dataset.remove];updateCart();}
+});
+document.getElementById('checkoutBtn').addEventListener('click',()=>{
+ const chosen=items.filter(p=>cartItems[p.name]);if(!chosen.length){showToast('سبد خرید خالی است.');return;}
+ const subtotal=chosen.reduce((sum,p)=>sum+p.price*cartItems[p.name],0);const shipping=subtotal>=1500000?0:65000;const order={id:'MS-'+Date.now().toString().slice(-6),date:new Date().toLocaleDateString('fa-IR'),items:chosen.map(p=>({name:p.name,qty:cartItems[p.name],price:p.price})),subtotal,shipping,total:subtotal+shipping,status:'ثبت سفارش',address:'ثبت نشده (نسخه نمایشی)'};orders.unshift(order);Object.keys(cartItems).forEach(k=>delete cartItems[k]);updateCart();showPage('سفارش‌ها');showToast('سفارش نمایشی شما ثبت شد.');
+});
+function renderOrders(){const box=document.getElementById('ordersList');document.getElementById('profileOrders').textContent=faNum(orders.length);box.innerHTML=orders.length?orders.map(o=>`<article class="order-card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h4>سفارش ${o.id}</h4><span class="order-status">● ${o.status||'ثبت سفارش'}</span></div><p>تاریخ: ${o.date}</p><p>${o.items.map(i=>i.name+' × '+faNum(i.qty)).join('، ')}</p><p><b>مبلغ کل: ${faNum(o.total)} تومان</b></p><div style="display:flex;gap:5px;margin:12px 0;direction:rtl"><span style="flex:1;text-align:center;background:#eaf8ef;color:#16834a;padding:8px 4px;border-radius:8px;font-size:10px">✓ ثبت سفارش</span><span style="flex:1;text-align:center;background:#f5f2f8;color:#82758c;padding:8px 4px;border-radius:8px;font-size:10px">آماده‌سازی</span><span style="flex:1;text-align:center;background:#f5f2f8;color:#82758c;padding:8px 4px;border-radius:8px;font-size:10px">ارسال</span><span style="flex:1;text-align:center;background:#f5f2f8;color:#82758c;padding:8px 4px;border-radius:8px;font-size:10px">تحویل</span></div><small style="color:var(--muted)">پیگیری نمایشی؛ اتصال به سامانه ارسال وجود ندارد.</small></article>`).join(''):'<div class="empty">هنوز سفارشی ثبت نکرده‌اید.</div>'; }
+document.getElementById('viewOrdersBtn').addEventListener('click',()=>showPage('سفارش‌ها'));
+
+document.getElementById('logoutBtn').addEventListener('click',()=>{
+ // خروج فقط نشست نمایشی را می‌بندد؛ سبد، علاقه‌مندی‌ها، سفارش‌ها و نظرات پاک نمی‌شوند.
+ document.querySelectorAll('.modal-backdrop').forEach(el=>el.remove());
+ const support=document.getElementById('supportMessage');if(support)support.remove();
+ showLoginScreen();
+});
+let toastTimer;
+updateCart();renderProducts();
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display='none',2400);}
+</script>
+</body>
+</html>
